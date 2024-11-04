@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Health Chatbot: Zenny</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+  }
+  .chatbot-container {
+    background-color: white;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .chat-window {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .message-input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  .send-button {
+    background-color: #ffa500;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+  }
+  .send-button:disabled {
+    background-color: #cccccc;
+  }
+</style>
+</head>
+<body>
+
+<div class="chatbot-container">
+  <h2>Mental Health Chatbot With Context</h2>
+  <div class="chat-window" id="chat-window">
+    <!-- Chat messages will be dynamically inserted here -->
+  </div>
+  <input type="text" id="message-input" class="message-input" placeholder="Type a message...">
+  <button id="send-button" class="send-button">Submit</button>
+</div>
+
+<script>
+// You would add your JavaScript here to handle the message sending and receiving.
+// This will require additional logic to communicate with a server or chatbot API.
+document.getElementById('send-button').addEventListener('click', function() {
+  var message = document.getElementById('message-input').value;
+  document.getElementById('chat-window').innerHTML += '<p>' + message + '</p>';
+  document.getElementById('message-input').value = ''; // Clear the input after sending
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask Your Own Question Here!</title>
+</head>
+<body>
+    <div class="chatbot-container">
+      <h2>Care Connect: Peer Support for Alzheimer’s Caregivers</h2>
+      <div class="chat-window" id="chat-window">
+        <!-- Chat messages will be dynamically inserted here -->
+        {% for message in chat_history %}
+            {% if message.Question %}
+                <div class="message question">
+                    {{ message.Question }}
+                </div>
+            {% endif %}
+            {% if message.Response %}
+                <div class="message response">
+                    {{ message.Response | safe }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <form id="chat-form">
+        <input type="text" id="message-input" name="message-input" class="message-input" placeholder="Type a message...">
+        <button type="submit" id="send-button" class="send-button">Submit</button>
+       
+    </form>
+  </div>
+  <div id="loading-container" class="loading-container" style="display: none;">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">ChatGPT is generating a response...</div>
+  </div>
+
+  <script>
+    function formatTimestamp(timestamp) {
+      var date = new Date(timestamp);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      return hours + ':' + minutes + ' ' + ampm;
+    }
+
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var messageInput = document.getElementById('message-input');
+      var message = messageInput.value;
+      var chatWindow = document.getElementById('chat-window');
+
+      // Add user message to chat window
+      var userMessage = document.createElement('div');
+      userMessage.className = 'message question';
+      userMessage.innerHTML = message + '<span class="timestamp">' + formatTimestamp(Date.now()) + '</span>';
+      chatWindow.appendChild(userMessage);
+
+      // Clear input field
+      messageInput.value = '';
+
+      // Disable submit button
+      var sendButton = document.getElementById('send-button');
+      sendButton.disabled = true;
+
+      // Add loading animation and timer to chat window
+      var loadingMessage = document.createElement('div');
+      loadingMessage.className = 'message response';
+      loadingMessage.innerHTML = '<div class="loading-spinner"></div><div class="loading-timer">0s</div>';
+      chatWindow.appendChild(loadingMessage);
+
+      var startTime = Date.now();
+      var timerInterval = setInterval(function() {
+        var elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        loadingMessage.querySelector('.loading-timer').textContent = elapsedTime + 's';
+      }, 1000);
+
+      fetch('/question?participant_id={{ participant_id }}', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({'message-input': message, 'action': 'ask_question'})
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Remove loading animation and timer
+          clearInterval(timerInterval);
+          chatWindow.removeChild(loadingMessage);
+
+          // Add ChatGPT's response to chat window
+          var botMessage = document.createElement('div');
+          botMessage.className = 'message response';
+          botMessage.innerHTML = data.bot_response + '<span class="timestamp">' + formatTimestamp(Date.now()) + '</span>';
+          chatWindow.appendChild(botMessage);
+
+          // Enable submit button
+          sendButton.disabled = false;
+
+          // Scroll to bottom
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle error, display error message to user
+          var errorMessage = document.createElement('div');
+          errorMessage.className = 'message response';
+          errorMessage.textContent = 'Oops! Something went wrong. Please try again.';
+          chatWindow.appendChild(errorMessage);
+          sendButton.disabled = false;
+        });
+    });
+
+    // Ensure the end-interview button allows form submission
+    document.getElementById('end-interview').addEventListener('click', function(event) {
+      if (!confirm('Are you sure you want to end the interview?')) {
+        event.preventDefault();  // Stops form submission if user cancels
+      }
+    });
+  </script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 50px;
+      height: auto;
+    }
+    .container {
+      display: flex;
+      max-width: 1200px;
+      height: auto;
+      margin: auto;
+    }
+    .scenario {
+      flex: 1;
+      padding: 20px;
+      background-color: white;
+      margin-right: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      height: auto;
+    }
+    .chatbot-container {
+      flex: 2;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      height: auto;
+    }
+    .chat-window {
+      width: 100%;
+      margin: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      height: auto;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+    }
+    .message {
+      padding: 5px 10px;
+      margin: 5px;
+      border-radius: 10px;
+      display: block;
+      max-width: 80%;
+    }
+    .question {
+      background-color: #F5DEB3;
+      text-align: right;
+      clear: both;
+      margin-left: 20%;
+    }
+    .response {
+      background-color: #f1f0f0;
+      text-align: left;
+      clear: both;
+      margin-right: 20%;
+    }
+    .message-input {
+      width: calc(100% - 22px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .send-button {
+      background-color: #FF7518;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .send-button:hover {
+      background-color: #ffa500;
+    }
+    .send-button:disabled {
+      background-color: #cccccc;
+    }
+    .loading-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .loading-spinner {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      border-top-color: #333;
+      animation: spin 1s ease-in-out infinite;
+      margin: 10px auto;
+    }
+    .loading-timer {
+      font-size: 14px;
+      margin-top: 5px;
+      text-align: center;
+    }
+    .timestamp {
+      font-size: 12px;
+      color: #888;
+      display: block;
+      margin-top: 5px;
+    }
+    .end-interview-button {
+      background-color: #FF6347;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .end-interview-button:hover {
+      background-color: #ffa500;
+    }
+    .scenario-button {
+      background-color: #D0865D;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .scenario-button:hover {
+      background-color: #ffa500;
+    }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</body>
+</html>

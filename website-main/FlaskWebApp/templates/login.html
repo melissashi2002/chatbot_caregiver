@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <form action="/submit" method="post" onsubmit="updateAction(this)">
+        <div class="login-container">
+            <h1>Welcome to Zenny: A mental health chatbot</h1>
+            <div class="login-field">
+                <i class="login-icon fas fa-user"></i>
+                <input type="text" name="participantId" class="login-input" placeholder="Participation ID">
+            </div>
+            <div class="login-field">
+                <i class="login-icon fas fa-lock"></i>
+                <select name="contextChoice" id="contextChoice" class="login-input">
+                    <option value="with">With Context</option>
+                    <option value="without">Without Context</option>
+                </select>
+            </div>
+            <button class="button login-submit" type="submit">
+                <span class="button-text">Start Chat with Zenny!</span>
+                <i class="button-icon fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </form>
+    <script>
+        function updateAction(form) {
+            var participantId = document.getElementById('participantId').value;
+            var contextChoice = document.getElementById('contextChoice').value;
+            save_data_to_csv(participant_id, context_choice, "", "")
+        
+            form.action = '/' + contextChoice + '/' + participantId;
+        }
+    </script>
+</body>
+</html>
+
+
