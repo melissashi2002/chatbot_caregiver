@@ -105,10 +105,21 @@ Shi, Jiayue Melissa; Yoo, Dong Whi; Wang, Keran; Rodriguez, Violeta J; Karkar, R
 arXiv preprint arXiv:2506.15047, 2025.
 
 ```bibtex
-@article{shi2025mapping,
-  title={Mapping Caregiver Needs to AI Chatbot Design: Strengths and Gaps in Mental Health Support for Alzheimer's and Dementia Caregivers},
-  author={Shi, Jiayue Melissa and Yoo, Dong Whi and Wang, Keran and Rodriguez, Violeta J and Karkar, Ravi and Saha, Koustuv},
-  journal={arXiv preprint arXiv:2506.15047},
-  year={2025}
+@article{shi2026mapping,
+title={Mapping Caregiver Needs to AI Chatbot Design: Strengths and Gaps in Mental Health Support for Alzheimer's and Dementia Caregivers},
+author={Shi, Jiayue Melissa and Yoo, Dong Whi and Wang, Keran and Rodriguez, Violeta J. and Karkar, Ravi and Saha, Koustuv},
+journal={ACM Transactions on Computing for Healthcare},
+year={2026}
+}
+
+@article{shi2025balancing,
+  title={Balancing Caregiving and Self-Care: Exploring Mental Health Needs of Alzheimer's and Dementia Caregivers},
+  author={Shi, Jiayue Melissa and Wang, Keran and Yoo, Dong Whi and Karkar, Ravi and Saha, Koustuv},
+  journal={Proceedings of the ACM on Human-Computer Interaction},
+  volume={9},
+  number={7},
+  pages={1--36},
+  year={2025},
+  publisher={ACM New York, NY, USA}
 }
 ```
