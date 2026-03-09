@@ -112,6 +112,8 @@ journal={ACM Transactions on Computing for Healthcare},
 year={2026}
 }
 
+```
+```bibtex
 @article{shi2025balancing,
   title={Balancing Caregiving and Self-Care: Exploring Mental Health Needs of Alzheimer's and Dementia Caregivers},
   author={Shi, Jiayue Melissa and Wang, Keran and Yoo, Dong Whi and Karkar, Ravi and Saha, Koustuv},
