@@ -100,10 +100,6 @@ Dependencies are listed in `requirements.txt`.
 
 If you use this project, please cite:
 
-Shi, Jiayue Melissa; Yoo, Dong Whi; Wang, Keran; Rodriguez, Violeta J; Karkar, Ravi; and Saha, Koustuv.  
-*Mapping Caregiver Needs to AI Chatbot Design: Strengths and Gaps in Mental Health Support for Alzheimer's and Dementia Caregivers*.  
-arXiv preprint arXiv:2506.15047, 2025.
-
 ```bibtex
 @article{shi2026mapping,
 title={Mapping Caregiver Needs to AI Chatbot Design: Strengths and Gaps in Mental Health Support for Alzheimer's and Dementia Caregivers},
